@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: govanityurls
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    spec:
+      containers:
+      - image: kleister-io/govanityurls
+        name: govanityurls
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+          limits:
+            cpu: "500m"
+            memory: "250M"
+        livenessProbe:
+          httpGet:
+            path: /_status/healthz
+            port: 8080
+          initialDelaySeconds: 90
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /_status/healthz
+            port: 8080
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - mountPath: /vanity.yaml
+          name: config
+          subPath: vanity.yaml
+      volumes:
+        - name: config
+          configMap:
+            name: vanity
+      restartPolicy: Always
+      imagePullPolicy: Always
