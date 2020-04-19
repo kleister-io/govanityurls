@@ -95,6 +95,11 @@ func newHandler(config []byte) (*handler, error) {
 
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	current := r.URL.Path
+	if current == "/_status/healthz" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	pc, subpath := h.paths.find(current)
 	if pc == nil && current == "/" {
 		h.serveIndex(w, r)

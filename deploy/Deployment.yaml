@@ -11,7 +11,7 @@ spec:
   template:
     spec:
       containers:
-      - image: kleister-io/govanityurls
+      - image: thingylabs/govanityurls
         name: govanityurls
         resources:
           requests:

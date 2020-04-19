@@ -1,7 +1,7 @@
 # fork: https://github.com/maxnilz/govanityurls/blob/master/Dockerfile
 #
 # builder
-FROM golang:1.13-alpine3.9 as builder
+FROM golang:1.13-alpine3.11 as builder
 
 RUN apk add --no-cache --update alpine-sdk bash
 ENV GO111MODULE "on"
@@ -11,7 +11,7 @@ COPY . .
 RUN go build -o /govanityurls
 
 # main
-FROM alpine:3.9
+FROM alpine:3.11
 
 RUN set -eux \
   && apk add --update tzdata ca-certificates openssl \
